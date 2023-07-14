@@ -8,10 +8,15 @@ body {
   background-color: #171717;
   color: #fafafa;
   font-family: "Sono", sans-serif;
-  padding: 40px;
+  padding: 48px 64px;
 }
 
 /* Main layout elements */
+
+.container {
+  max-width: 1500px;
+  margin: 0 auto;
+}
 
 .header {
   margin-bottom: 40px;
@@ -24,11 +29,13 @@ body {
   background-color: #404040;
   margin-bottom: 40px;
   padding: 16px 40px;
+  text-align: center;
 }
 
 .main {
   display: grid;
   grid-template-columns: 250px 1fr;
+  gap: 48px;
 }
 
 /* Elements */
@@ -39,11 +46,20 @@ body {
   gap: 16px;
 }
 
+.logo img {
+  width: 68px;
+  height: 68px;
+}
+
 h1 {
   font-size: 46px;
   text-transform: uppercase;
   font-family: "Nunito", sans-serif;
   padding-top: 6px;
+}
+
+.category {
+  margin-bottom: 16px;
 }
 
 .fact {
@@ -74,4 +90,47 @@ h1 {
 
 ul {
   list-style: none;
+}
+
+.source:link,
+.source:visited {
+  color: #a3a3a3;
+  text-decoration: none;
+  margin-left: 12px;
+  transition: 0.3s;
+}
+
+.source:hover,
+.source:active {
+  color: #3b82f6;
+}
+
+.btn {
+  border: none;
+  font-family: "Nunito", sans-serif;
+  line-height: 1;
+  text-transform: uppercase;
+  font-size: 17px;
+  padding: 16px 0 13px;
+  background-image: linear-gradient(135deg, #3b82f6, #ef4444, #16a34a, #eab308);
+  color: inherit;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  transform: scale(110%) rotate(-2deg);
+}
+
+.btn-large {
+  font-size: 20px;
+  padding: 20px 32px 17px;
+}
+.btn-all-categories {
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.btn-category {
+  width: 100%;
+  background-image: none;
 }
