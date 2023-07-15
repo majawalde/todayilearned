@@ -18,6 +18,10 @@ body {
   margin: 0 auto;
 }
 
+.hidden {
+  display: none !important;
+}
+
 .header {
   margin-bottom: 40px;
   display: flex;
@@ -149,7 +153,7 @@ ul {
 }
 
 .btn:hover {
-  transform: scale(110%) rotate(-2deg);
+  transform: scale(110%);
 }
 
 .btn-large {
