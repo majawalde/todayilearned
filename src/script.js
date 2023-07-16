@@ -50,7 +50,25 @@ const factsList = document.querySelector(".facts-list");
 
 //Create DOM elements: Render facts in list
 factsList.innerHTML = "";
-createFactsList(initialFacts);
+
+//Load data from supabase
+loadFacts();
+async function loadFacts() {
+  const res = await fetch(
+    "https://szmvziunffxuejmzrtue.supabase.co/rest/v1/facts",
+    {
+      headers: {
+        apikey:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6bXZ6aXVuZmZ4dWVqbXpydHVlIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODk0MjU1MDIsImV4cCI6MjAwNTAwMTUwMn0.4U_jfaOSQe4gJhZEXtVsPRztMG_Opkbta50VeZX1AM4",
+        authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6bXZ6aXVuZmZ4dWVqbXpydHVlIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODk0MjU1MDIsImV4cCI6MjAwNTAwMTUwMn0.4U_jfaOSQe4gJhZEXtVsPRztMG_Opkbta50VeZX1AM4",
+      },
+    }
+  );
+  const data = await res.json();
+  //const filteredData = data.filter((fact) => fact.category === "society");
+  createFactsList(data);
+}
 
 function createFactsList(dataArray) {
   const htmlArray = dataArray.map(
@@ -63,7 +81,9 @@ function createFactsList(dataArray) {
         target="_blank"
       >(Source)</a>
     </p>
-    <span class="tag" style="background-color: #3b82f6">${fact.category}</span>
+    <span class="tag" style="background-color: ${
+      CATEGORIES.find((cat) => cat.name === fact.category).color
+    }">${fact.category}</span>
 </li>`
   );
 
