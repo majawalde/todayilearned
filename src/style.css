@@ -13,7 +13,7 @@ body {
 
 /* Main layout elements */
 
-.container {
+#root {
   max-width: 1500px;
   margin: 0 auto;
 }
