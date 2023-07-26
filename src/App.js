@@ -1,5 +1,6 @@
 import "./style.css";
 import React from "react";
+import supabase from "./supabase";
 
 const CATEGORIES = [
   { name: "technology", color: "#3b82f6" },
@@ -48,17 +49,27 @@ const initialFacts = [
 
 function App() {
   const [showForm, setShowForm] = React.useState(false);
+  const [facts, setFacts] = React.useState(initialFacts);
+
+  React.useEffect(function () {
+    async function getFacts() {
+      const { data: facts, error } = await supabase.from("facts").select("*");
+      if (error) console.log(error);
+      else setFacts(facts);
+    }
+    getFacts();
+  }, []);
 
   return (
     <>
-      {/* HEADER */}
       <Header showForm={showForm} setShowForm={setShowForm} />
-
-      {showForm ? <NewFactForm /> : null}
+      {showForm ? (
+        <NewFactForm setFacts={setFacts} setShowForm={setShowForm} />
+      ) : null}
 
       <main className="main">
         <CategoryFilter />
-        <FactList />
+        <FactList facts={facts} />
       </main>
     </>
   );
@@ -81,7 +92,17 @@ function Header({ showForm, setShowForm }) {
   );
 }
 
-function NewFactForm() {
+function isValidUrl(string) {
+  let url;
+  try {
+    url = new URL(string);
+  } catch (_) {
+    return false;
+  }
+  return url.protocol === "http:" || url.protocol === "https:";
+}
+
+function NewFactForm({ setFacts, setShowForm }) {
   const [text, setText] = React.useState("");
   const [source, setSource] = React.useState("");
   const [category, setCategory] = React.useState("");
@@ -89,10 +110,36 @@ function NewFactForm() {
 
   function handleSubmit(event) {
     event.preventDefault();
+
+    // Check if the data is valid
+    if (text && isValidUrl(source) && category && textLength <= 200) {
+      // Create a new fact object
+      const newFact = {
+        id: Math.round(Math.random() * 10000000),
+        text,
+        source,
+        category,
+        votesInteresting: 0,
+        votesMindblowing: 0,
+        votesFalse: 0,
+        createdIn: new Date().getFullYear(),
+      };
+
+      // Add the new fact to the state
+      setFacts((facts) => [newFact, ...facts]);
+    }
+
+    // Reset the input fields
+    setText("");
+    setSource("");
+    setCategory("");
+
+    // Close the form
+    setShowForm(false);
   }
 
   return (
-    <form className="fact-form" onSubmit={() => handleSubmit()}>
+    <form className="fact-form" onSubmit={handleSubmit}>
       <input
         type="text"
         placeholder="Share a fact with the world..."
@@ -126,8 +173,8 @@ function CategoryFilter() {
   return (
     <aside>
       <ul>
-        <li class="category">
-          <button class="btn btn-all-categories">All</button>
+        <li className="category">
+          <button className="btn btn-all-categories">All</button>
         </li>
         {CATEGORIES.map((category) => (
           <li key={category.name} className="category">
@@ -144,10 +191,7 @@ function CategoryFilter() {
   );
 }
 
-function FactList() {
-  //temporary
-  const facts = initialFacts;
-
+function FactList({ facts }) {
   return (
     <section>
       <ul className="facts-list">
