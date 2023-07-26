@@ -50,12 +50,15 @@ const initialFacts = [
 function App() {
   const [showForm, setShowForm] = React.useState(false);
   const [facts, setFacts] = React.useState(initialFacts);
+  const [loading, setLoading] = React.useState(false);
 
   React.useEffect(function () {
     async function getFacts() {
+      setLoading(true);
       const { data: facts, error } = await supabase.from("facts").select("*");
       if (error) console.log(error);
       else setFacts(facts);
+      setLoading(false);
     }
     getFacts();
   }, []);
@@ -69,10 +72,15 @@ function App() {
 
       <main className="main">
         <CategoryFilter />
-        <FactList facts={facts} />
+
+        {loading ? <Loader /> : <FactList facts={facts} />}
       </main>
     </>
   );
+}
+
+function Loader() {
+  return <p>Loading...</p>;
 }
 
 function Header({ showForm, setShowForm }) {
