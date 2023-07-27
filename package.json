@@ -1,6 +1,6 @@
 {
   "homepage": "http://majawalde.github.io/todayilearned",
-  "name": "funfact",
+  "name": "todayilearned",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
